@@ -61,11 +61,11 @@ router.post('/analyze', requireAuth, upload.single('file'), async (req, res) => 
   if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
 
   const fileBase64 = req.file.buffer.toString('base64');
-  const mimeType = req.file.mimetype as Anthropic.Base64ImageSource['media_type'] | 'application/pdf';
+  const mimeType = req.file.mimetype as 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp' | 'application/pdf';
 
   const fileContent = mimeType === 'application/pdf'
     ? { type: 'document' as const, source: { type: 'base64' as const, media_type: 'application/pdf' as const, data: fileBase64 } }
-    : { type: 'image' as const, source: { type: 'base64' as const, media_type: mimeType as Anthropic.Base64ImageSource['media_type'], data: fileBase64 } };
+    : { type: 'image' as const, source: { type: 'base64' as const, media_type: mimeType as 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp', data: fileBase64 } };
 
   try {
     const response = await anthropic.messages.create({
@@ -134,11 +134,11 @@ router.post('/extract', requireAuth, upload.single('file'), async (req, res) => 
   if (!category) return res.status(400).json({ error: 'Missing category' });
 
   const fileBase64 = req.file.buffer.toString('base64');
-  const mimeType = req.file.mimetype as Anthropic.Base64ImageSource['media_type'] | 'application/pdf';
+  const mimeType = req.file.mimetype as 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp' | 'application/pdf';
 
   const fileContent = mimeType === 'application/pdf'
     ? { type: 'document' as const, source: { type: 'base64' as const, media_type: 'application/pdf' as const, data: fileBase64 } }
-    : { type: 'image' as const, source: { type: 'base64' as const, media_type: mimeType as Anthropic.Base64ImageSource['media_type'], data: fileBase64 } };
+    : { type: 'image' as const, source: { type: 'base64' as const, media_type: mimeType as 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp', data: fileBase64 } };
 
   const isIssuance = category === 'Issuance';
   const properties: Record<string, object> = isIssuance
@@ -203,11 +203,11 @@ router.post('/summarize', requireAuth, upload.single('file'), async (req, res) =
   if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
 
   const fileBase64 = req.file.buffer.toString('base64');
-  const mimeType = req.file.mimetype as Anthropic.Base64ImageSource['media_type'] | 'application/pdf';
+  const mimeType = req.file.mimetype as 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp' | 'application/pdf';
 
   const fileContent = mimeType === 'application/pdf'
     ? { type: 'document' as const, source: { type: 'base64' as const, media_type: 'application/pdf' as const, data: fileBase64 } }
-    : { type: 'image' as const, source: { type: 'base64' as const, media_type: mimeType as Anthropic.Base64ImageSource['media_type'], data: fileBase64 } };
+    : { type: 'image' as const, source: { type: 'base64' as const, media_type: mimeType as 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp', data: fileBase64 } };
 
   try {
     const response = await anthropic.messages.create({
