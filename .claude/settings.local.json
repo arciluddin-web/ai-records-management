@@ -12,7 +12,13 @@
       "Bash(npm run *)",
       "Bash(curl *)",
       "Bash(git pull *)",
-      "Bash(git stash *)"
+      "Bash(git stash *)",
+      "Bash(docker --version)",
+      "Bash(psql --version)",
+      "PowerShell(psql *)",
+      "PowerShell(winget *)",
+      "PowerShell($passwords = @\\(\"postgres\", \"admin\", \"1234\", \"12345\", \"root\", \"\"\\); foreach \\($pw in $passwords\\) { $env:PGPASSWORD = $pw; $result = & \"C:\\\\Program Files\\\\PostgreSQL\\\\17\\\\bin\\\\psql.exe\" -U postgres -c \"SELECT 1;\" 2>&1; if \\($LASTEXITCODE -eq 0\\) { Write-Host \"Success with password: '$pw'\"; break } })",
+      "PowerShell($env:PGPASSWORD = \"postgres\"; & \"C:\\\\Program Files\\\\PostgreSQL\\\\17\\\\bin\\\\psql.exe\" -U postgres -c \"CREATE DATABASE ai_records;\" 2>&1)"
     ]
   }
 }
