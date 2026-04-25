@@ -19,11 +19,22 @@ app.use('/api/ai', aiRouter);
 
 app.get('/health', (_req, res) => res.json({ status: 'ok' }));
 
-initDb()
-  .then(() => {
-    app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
-  })
-  .catch(err => {
-    console.error('Failed to initialize database:', err);
-    process.exit(1);
-  });
+async function startServer(retries = 5, delay = 3000): Promise<void> {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      await initDb();
+      app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
+      return;
+    } catch (err) {
+      console.error(`Database init attempt ${attempt}/${retries} failed:`, err);
+      if (attempt === retries) {
+        console.error('All database connection attempts failed, exiting.');
+        process.exit(1);
+      }
+      console.log(`Retrying in ${delay / 1000}s...`);
+      await new Promise(resolve => setTimeout(resolve, delay));
+    }
+  }
+}
+
+startServer();
